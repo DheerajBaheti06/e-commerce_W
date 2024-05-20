@@ -5,6 +5,7 @@ const ProductSchema = new Schema(
     name: {
       type: String,
       required: [true, "Please Enter Product Name"],
+      trim: true
     },
     description: {
       type: String,
@@ -48,7 +49,7 @@ const ProductSchema = new Schema(
           required: true,
         },
         rating: {
-          type: Nummber,
+          type: Number,
           required: true,
         },
         comment: {
