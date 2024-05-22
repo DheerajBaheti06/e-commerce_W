@@ -1,7 +1,12 @@
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/ApiError.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
 import { Product } from "../models/product.models.js";
+import {
+  ApiError,
+  ApiFeatures,
+  ApiResponse,
+  asyncHandler
+} from "./../utils/index.js"
+
+let productCount;
 
 const createProduct = asyncHandler(async (req, res) => {
   const product = await Product.create(req.body);
@@ -15,21 +20,31 @@ const createProduct = asyncHandler(async (req, res) => {
 });
 
 const getAllProducts = asyncHandler(async (req, res) => {
-    const allProducts = await Product.find();
-    if (!allProducts) {
-      throw new ApiError(404, "product not found!!");
-    }
-    return res
-      .status(200)
-      .json(new ApiResponse(200, allProducts, "Route is working fine"));
+
+  const resultsPerPage = 5;
+  productCount = await Product.countDocuments();
+
+  const apiFeature = new ApiFeatures(Product.find(), req.query).search().filter().pagination(resultsPerPage)
+  const allProducts = await apiFeature?.query;
+  return res
+    .status(200)
+    .json(new ApiResponse(200, allProducts, "product founded sucessfully"));
   
+});
+
+const getProductDetails = asyncHandler(async (req, res) => {
+  const { _id } = req.params;
+  const product = await Product.findById(_id);
+  if (!product) {
+    throw new ApiError(404, "product not found!!");
+  }
+  return res
+    .status(201)
+    .json(new ApiResponse(200, [product, productCount], "product deleted sucessfully"));
 });
 
 const deleteProduct = asyncHandler(async (req, res) => {
   const { _id } = req.params;
-  if (!_id) {
-    throw new ApiError(404, "Atlest one product should be selected!!");
-  }
   const deletedProduct = await Product.findByIdAndDelete(_id);
   if (!deletedProduct) {
     throw new ApiError(404, "product not found!!");
@@ -52,4 +67,10 @@ const updateProduct = asyncHandler( async (req, res) => {
   
 })
 
-export { createProduct, getAllProducts, deleteProduct, updateProduct };
+export { 
+  createProduct,
+  getAllProducts, 
+  getProductDetails,
+  deleteProduct, 
+  updateProduct 
+};
