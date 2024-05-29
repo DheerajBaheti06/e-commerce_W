@@ -2,15 +2,10 @@ import {v2 as cloudinary} from 'cloudinary';
 import fs from "fs";
 
 
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME ,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET,
-// });
 cloudinary.config({
-  cloud_name: 'ecommercial' ,
-  api_key: '839244593717593',
-  api_secret: 'Xp-09eCbvnO8vwXj0GKWOZ0NEmc'
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME ,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
     
 const uploadOnCloudinary = async (localFilePath) => {

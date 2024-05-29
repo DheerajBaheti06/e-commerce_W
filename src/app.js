@@ -19,7 +19,7 @@ import productRouter from "./routes/product.routes.js";
 import userRouter from "./routes/user.routes.js"
 
 // routes declaration
-app.use("/api/v1/products", productRouter);
+app.use("api/v1/products", productRouter);
 app.use("/api/v1/user", userRouter);
 
 export { app };
