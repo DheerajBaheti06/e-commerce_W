@@ -5,7 +5,6 @@ import {
   uploadOnCloudinary,
 } from "../utils/index.js";
 import { User } from "../models/user.models.js";
-import { access } from "fs";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -39,21 +38,21 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "user with email or username already exists");
   }
 
-  const avatarLocalPath = req.file?.path; // ----------------req.file does not contain path---error point
-  if (!avatarLocalPath) {
-    throw new ApiError(400, "Avatar is required field");
-  }
+  // const avatarLocalPath = req.file?.path; // ----------------req.file does not contain path---error point
+  // if (!avatarLocalPath) {
+  //   throw new ApiError(400, "Avatar is required field");
+  // }
 
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
-  if (!avatar) {
-    throw new ApiError(400, "something went wrong while uploading !!");
-  }
+  // const avatar = await uploadOnCloudinary(avatarLocalPath);
+  // if (!avatar) {
+  //   throw new ApiError(400, "something went wrong while uploading !!");
+  // }
 
   const user = await User.create({
     username: username.toLowerCase(),
     password,
     email,
-    avatar: avatar.url,
+    // avatar: avatar.url,
   });
 
   const createdUser = await User.findById(user._id).select(
@@ -74,25 +73,31 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
   if (!username && !email) {
-    throw new ApiError(400, "USERNAME AND EMAIL IS REQUIRED");
+    throw new ApiError(400, "USERNAME AND EMAIL is rquired");
   }
+  console.log("got username and email");
 
   const user = await User.findOne({
     $or: [{ username }, { email }],
   });
   console.log("using $or ---", user);
   if (!user) {
-    throw new ApiError(400, "userr does not exists !!");
+    throw new ApiError(400, "user does not exists !!");
   }
+  console.log("$or working");
+
 
   const isPaswordValid = await user.isPasswordCorrect(password);
-  if (!isPasswordValid) {
+  if (!isPaswordValid) {
     throw new ApiError(404, "PASSWORD is wrong !!");
   }
+  console.log("password valid");
 
   const { accessToken, refreshToken } = generateAccessAndRefreshTokens(
     user._id
   );
+
+  console.log("got access token and refresh token");
 
   const loggedInUser = await User.findById(user._id).select(
     "-password refreshToken"
@@ -103,6 +108,8 @@ const loginUser = asyncHandler(async (req, res) => {
     secure: true,
   };
 
+  console.log("got loggedInUser");
+
   return res
     .status(200)
     .cookie("refreshToken", refreshToken, options)
@@ -111,7 +118,7 @@ const loginUser = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         {
-          user: loggedInUser,
+          loggedInUser,
           accessToken,
           refreshToken,
         },
