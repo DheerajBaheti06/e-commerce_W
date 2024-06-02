@@ -23,18 +23,23 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
       throw new ApiError(401, "Invalid Access Token");
     }
 
-    req.user = user; // we can access abything about user in controllers via "req.user.---"
+    req.user = user; // we can access anything about user in controllers via "req.user.---"
     next();
   } catch (error) {
     throw new ApiError(401, error?.message || "Invalid Access Token");
   }
 });
 
-export const authorizeRoles = (...roles) => {
+export const authorizeRoles = () => {
   return (req, _, next) => {
-    if (!roles.includes(req.user.role)) {
-      return next( new ApiError(403, `Role: ${req.user.role} is not allowed to access this resource`) ) // throw nahi likha hu, since showing error
+    if (req.user.role === "user") {
+      return next(
+        new ApiError(
+          405,
+          `Role: ${req.user.role} is not allowed to access this resource`
+        )
+      ); // throw keyword not written, since showing error
     }
     next();
-  }
-}
+  };
+};
