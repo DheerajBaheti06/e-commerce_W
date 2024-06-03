@@ -17,6 +17,7 @@ app.use(cookieParser())
 // importing routes
 import productRouter from "./routes/product.routes.js";
 import userRouter from "./routes/user.routes.js"
+import sendEmail from "./utils/sendEmail.js"
 
 // routes declaration
 app.use("/api/v1/products", productRouter);

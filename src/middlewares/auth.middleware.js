@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken";
 import { User } from "./../models/user.models.js";
 import { ApiError, asyncHandler } from "./../utils/index.js";
-import { error } from "console";
-import { throws } from "assert";
 
 // verifyJWT means verified(i.e. login) hai ya nhi :-
 export const verifyJWT = asyncHandler(async (req, _, next) => {

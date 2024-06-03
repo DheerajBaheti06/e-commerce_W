@@ -81,14 +81,13 @@ userSchema.methods.generateRefreshToken = function () {
 };
 
 userSchema.methods.getResetPasswordToken = async function () {
-  // const resetToken = Crypto.randomBytes(20).toString("hex");
   const resetToken = nanoid(20);
   console.log(resetToken);
-  // this.resetPasswordToken = await bcrypt.hash(resetToken, Number(20));
   // this.resetPasswordToken = crypto
   //   .createHash("sha256")
   //   .update(resetToken)
   //   .digest("hex");
+  
 
   this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
 

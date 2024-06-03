@@ -6,7 +6,6 @@ import {
   // uploadOnCloudinary,
 } from "../utils/index.js";
 import { User } from "../models/user.models.js";
-import { log } from "console";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -172,21 +171,25 @@ const forgotPassword = asyncHandler(async (req, res) => {
     await sendEmail({
       email: user.email,
       subject: "commerce Password Recovery",
-      message: "",
+      // message: "anime backwas",
+      message: message,
     });
 
     return res
       .status(200)
       .json(
-        new ApiResponse(201, `Email is sent to ${user.email} successfully`)
+        new ApiResponse(
+          201,
+          `Email is sent to ${user.email} successfully`
+        )
       );
   } catch (error) {
     console.log("error in tryCatch:", error);
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
 
-    await user.save({ validateBeforeSave: false });
-    throw new ApiError(500, error.message);
+      await user.save({ validateBeforeSave: false });
+      throw new ApiError(500, error.message);
   }
 });
 
