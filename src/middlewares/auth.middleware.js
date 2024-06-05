@@ -34,7 +34,7 @@ export const authorizeRoles = () => {
       return next(
         new ApiError(
           405,
-          `Role: ${req.user.role} is not allowed to access this resource`
+          `Role: ${req.user.role} is not allowed to do such action.`
         )
       ); // throw keyword not written, since showing error
     }
