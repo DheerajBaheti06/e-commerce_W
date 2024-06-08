@@ -190,37 +190,4 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
 });
 
-// const adminRequest = asyncHandler(async (req, res) => {
-//   const { username, email, password } = req.body;
-//   if ([username, email, password].some((field) => field?.trim === "")) {
-//     throw new ApiError(404, "All fields re required !!");
-//   }
-//   const isExistedUser = await User.findOne({
-//     $or: [{ username }, { email }],
-//   });
-//   if (!isExistedUser) {
-//     throw new ApiError(404, "user does not exists!!");
-//   }
-//   const isPasswordValid = await isExistedUser.isPasswordCorrect(String(password))
-//   if(!isPasswordValid) {
-//     throw new ApiError(404, "password is wrong !!")
-//   }
-//   const updatedUser = await User.findByIdAndUpdate(
-//     await isExistedUser?._id,
-//     {
-//       role: "admin",
-//     },
-//     { new: true }
-//   );
-//   await updatedUser.save({ validateBeforeSave: false });
-//   if (!updatedUser) {
-//     throw new ApiError(401, "something went wrong!")
-//   }
-//   return res
-//     .status(200)
-//     .json(new ApiResponse(201, updatedUser, `${updatedUser.username} is now admin.`))
-// });
-
-export { registerUser, loginUser, logoutUser, forgotPassword, 
-  // adminRequest
-};
+export { registerUser, loginUser, logoutUser, forgotPassword };
