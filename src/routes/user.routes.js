@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { upload } from "./../middlewares/multer.middleware.js";
 import {
-  adminRequest,
+  // adminRequest,
   forgotPassword,
   loginUser,
   logoutUser,
@@ -18,6 +18,6 @@ router.route("/login").post(loginUser);
 router.route("/logout").get(verifyJWT, logoutUser);
 router.route("/password/forgot").get(forgotPassword);
 
-router.route("/request").put(adminRequest);
+// router.route("/request").put(adminRequest);
 
 export default router;

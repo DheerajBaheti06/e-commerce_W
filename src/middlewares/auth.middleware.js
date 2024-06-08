@@ -29,15 +29,19 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
 });
 
 export const authorizeRoles = () => {
-  return (req, _, next) => {
-    if (req.user.role === "user") {
-      return next(
-        new ApiError(
-          405,
-          `Role: ${req.user.role} is not allowed to do such action.`
-        )
-      ); // throw keyword not written, since showing error
-    }
-    next();
-  };
+  try {
+    return (req, _, next) => {
+      if (req.user.role === "user") {
+        return next(
+          new ApiError(
+            405,
+            `Role: ${req.user.role} is not allowed to do such action.`
+          )
+        ); // throw keyword not written, since showing error
+      }
+      next();
+    };
+  } catch (error) {
+    throw new ApiError(501, "something went wrong while authorizing roles")
+  }
 };
