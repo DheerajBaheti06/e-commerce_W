@@ -21,13 +21,15 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
       throw new ApiError(401, "Invalid Access Token");
     }
 
-    req.user = user; // we can access anything about user in controllers via "req.user.---"
+    req.user = user; // we can access cuurent user in controllers if this middleware applied, via "req.user.---"
     next();
   } catch (error) {
     throw new ApiError(401, error?.message || "Invalid Access Token");
   }
 });
 
+//  middleware to stop user from doing admin & superadmin tasks
+//  only admin & superadmin can pass this middleare
 export const authorizeRoles = () => {
   try {
     return (req, _, next) => {
@@ -42,6 +44,6 @@ export const authorizeRoles = () => {
       next();
     };
   } catch (error) {
-    throw new ApiError(501, "something went wrong while authorizing roles")
+    throw new ApiError(501, "something went wrong while authorizing roles");
   }
 };

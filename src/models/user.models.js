@@ -4,6 +4,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { nanoid } from "nanoid";
 
+// single model for user, admin & superAdmin
+// required fileds are :- username, email, password
 const userSchema = new Schema(
   {
     username: {
@@ -32,10 +34,10 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      default: "user",
+      default: "user", //default role is user and updates automatically as per requests
     },
 
-    refreshToken: String,
+    refreshToken: String, // new refresh token is generated on userLogin and adminLogin
 
     resetPasswordToken: String,
     resetPasswordExpire: Date,
@@ -43,6 +45,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+// password hashing
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
@@ -50,10 +53,13 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+// compare password
 userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
+// tokens will be added in controllers file
+// access token generation logic only
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
@@ -68,6 +74,8 @@ userSchema.methods.generateAccessToken = function () {
     }
   );
 };
+
+// refresh token generation logic only
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
@@ -80,6 +88,7 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
+// reset password token method, NOT COMPLETED
 userSchema.methods.getResetPasswordToken = async function () {
   const resetToken = nanoid(20);
   console.log(resetToken);
@@ -87,7 +96,6 @@ userSchema.methods.getResetPasswordToken = async function () {
   //   .createHash("sha256")
   //   .update(resetToken)
   //   .digest("hex");
-  
 
   this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
 

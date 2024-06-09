@@ -6,7 +6,6 @@ import {
   asyncHandler,
 } from "./../utils/index.js";
 
-
 let productCount;
 
 const getAllProducts = asyncHandler(async (req, res) => {
@@ -40,8 +39,4 @@ const getProductDetails = asyncHandler(async (req, res) => {
     );
 });
 
-
-export {
-  getAllProducts,
-  getProductDetails,
-};
+export { getAllProducts, getProductDetails };

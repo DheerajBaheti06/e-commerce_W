@@ -1,5 +1,7 @@
 import nodeMailer from "nodemailer";
 
+//  not working(may github codespace config error) but try once
+
 // connect with smtp
 const sendEmail = async (req, res) => {
   let transporter = await nodeMailer.createTransport({

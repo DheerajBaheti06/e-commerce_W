@@ -1,3 +1,5 @@
+//  utility for better api responses
+
 class ApiResponse {
   constructor(statusCode, data, message = "Success") {
     this.statusCode = statusCode;
@@ -7,4 +9,4 @@ class ApiResponse {
   }
 }
 
-export default ApiResponse
+export default ApiResponse;

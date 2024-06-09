@@ -1,11 +1,12 @@
 import mongoose, { Schema } from "mongoose";
-
+//   required fields are :- name, description, price, images(publicId=text, url=text), category
+// file uploading not workin therefore providing strings to images field
 const ProductSchema = new Schema(
   {
     name: {
       type: String,
       required: [true, "Please Enter Product Name"],
-      trim: true
+      trim: true,
     },
     description: {
       type: String,
@@ -58,11 +59,11 @@ const ProductSchema = new Schema(
         },
       },
     ],
+    // owner ObjectId will be added automatically while creating product
     owner: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      // required: true
-    }
+    },
   },
   {
     timestamps: true,
