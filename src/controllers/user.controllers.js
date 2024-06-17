@@ -3,7 +3,7 @@ import {
   ApiResponse,
   asyncHandler,
   sendEmail,
-  // uploadOnCloudinary,
+  uploadOnCloudinary,
 } from "../utils/index.js";
 import { User } from "../models/user.models.js";
 
@@ -39,21 +39,21 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "user with email or username already exists");
   }
 
-  // const avatarLocalPath = req.file?.path; // ----------------req.file does not contain path---error point
-  // if (!avatarLocalPath) {
-  //   throw new ApiError(400, "Avatar is required field");
-  // }
+  const avatarLocalPath = req.file?.path;
+  if (!avatarLocalPath) {
+    throw new ApiError(400, "Avatar is required field");
+  }
 
-  // const avatar = await uploadOnCloudinary(avatarLocalPath);
-  // if (!avatar) {
-  //   throw new ApiError(400, "something went wrong while uploading !!");
-  // }
+  const avatar = await uploadOnCloudinary(avatarLocalPath);
+  if (!avatar) {
+    throw new ApiError(400, "something went wrong while uploading !!");
+  }
 
   const user = await User.create({
     username: username.toLowerCase(),
     password,
     email,
-    // avatar: avatar.url,
+    avatar: avatar.url,
   });
 
   const createdUser = await User.findById(user._id).select(

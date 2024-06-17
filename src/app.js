@@ -22,7 +22,8 @@ import userRouter from "./routes/user.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 
 // routes declaration
-// products route
+
+// products 
 app.use("/api/v1/products", productRouter);
 //  user route
 app.use("/api/v1/user", userRouter);

@@ -14,12 +14,12 @@ const router = Router();
 
 
 // user page
-router.route("/").get((req, res) => {
+router.route("/home").get((req, res) => {
   res.send("welcome to user page");
 });
 
 // route to register
-router.route("/register").patch(upload.single("avatar"), registerUser); // don't upload file, file uploading not working rest is okk, avatar field ko required field mat rakhna...
+router.route("/register").patch(upload.single("avatar"), registerUser);
 
 // route to user login
 router.route("/login").post(loginUser);
